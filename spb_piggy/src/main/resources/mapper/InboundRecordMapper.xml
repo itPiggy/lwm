@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.piggy.lwm.mapper.InboundRecordMapper">
+
+    <resultMap type="com.piggy.lwm.domain.InboundRecordEntity" id="InboundRecordMap">
+        <result property="recordId" column="record_id" jdbcType="VARCHAR"/>
+        <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
+        <result property="warehouseId" column="warehouse_id" jdbcType="VARCHAR"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+        <result property="productionDate" column="production_date" jdbcType="VARCHAR"/>
+        <result property="storageLocation" column="storage_location" jdbcType="VARCHAR"/>
+        <result property="operatorId" column="operator_id" jdbcType="INTEGER"/>
+        <result property="inboundTime" column="inbound_time" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        select
+record_id, goods_id, warehouse_id, quantity, production_date, storage_location, operator_id, inbound_time
+        from inbound_record
+        where del_mark = 1
+    </sql>
+    <sql id="condition">
+            <if test="inboundRecord.recordId != null and inboundRecord.recordId != ''">
+                and record_id = #{inboundRecord.recordId}
+            </if>
+            <if test="inboundRecord.goodsId != null and inboundRecord.goodsId != ''">
+                and goods_id = #{inboundRecord.goodsId}
+            </if>
+            <if test="inboundRecord.warehouseId != null and inboundRecord.warehouseId != ''">
+                and warehouse_id = #{inboundRecord.warehouseId}
+            </if>
+            <if test="inboundRecord.quantity != null">
+                and quantity = #{inboundRecord.quantity}
+            </if>
+            <if test="inboundRecord.productionDate != null and inboundRecord.productionDate != ''">
+                and production_date = #{inboundRecord.productionDate}
+            </if>
+            <if test="inboundRecord.storageLocation != null and inboundRecord.storageLocation != ''">
+                and storage_location = #{inboundRecord.storageLocation}
+            </if>
+            <if test="inboundRecord.operatorId != null">
+                and operator_id = #{inboundRecord.operatorId}
+            </if>
+            <if test="inboundRecord.inboundTime != null and inboundRecord.inboundTime != ''">
+                and inbound_time = #{inboundRecord.inboundTime}
+            </if>
+    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="InboundRecordMap">
+        <include refid="baseSql"></include>
+        and record_id = #{recordId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="InboundRecordMap">
+        <include refid="baseSql"></include>
+        <include refid="condition"></include>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from inbound_record
+        where del_mark  = 1
+            <if test="recordId != null and recordId != ''">
+                and record_id = #{recordId}
+            </if>
+            <if test="goodsId != null and goodsId != ''">
+                and goods_id = #{goodsId}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                and warehouse_id = #{warehouseId}
+            </if>
+            <if test="quantity != null">
+                and quantity = #{quantity}
+            </if>
+            <if test="productionDate != null and productionDate != ''">
+                and production_date = #{productionDate}
+            </if>
+            <if test="storageLocation != null and storageLocation != ''">
+                and storage_location = #{storageLocation}
+            </if>
+            <if test="operatorId != null">
+                and operator_id = #{operatorId}
+            </if>
+            <if test="inboundTime != null and inboundTime != ''">
+                and inbound_time = #{inboundTime}
+            </if>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="recordId" useGeneratedKeys="true">
+        insert into inbound_record(goods_id, warehouse_id, quantity, production_date, storage_location, operator_id, inbound_time)
+        values (#{goodsId}, #{warehouseId}, #{quantity}, #{productionDate}, #{storageLocation}, #{operatorId}, #{inboundTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="recordId" useGeneratedKeys="true">
+        insert into inbound_record(goods_id, warehouse_id, quantity, production_date, storage_location, operator_id, inbound_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.productionDate}, #{entity.storageLocation}, #{entity.operatorId}, #{entity.inboundTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="recordId" useGeneratedKeys="true">
+        insert into inbound_record(goods_id, warehouse_id, quantity, production_date, storage_location, operator_id, inbound_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.productionDate}, #{entity.storageLocation}, #{entity.operatorId}, #{entity.inboundTime})
+        </foreach>
+        on duplicate key update
+goods_id = values(goods_id)warehouse_id = values(warehouse_id)quantity = values(quantity)production_date = values(production_date)storage_location = values(storage_location)operator_id = values(operator_id)inbound_time = values(inbound_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update inbound_record
+        <set>
+            <if test="goodsId != null and goodsId != ''">
+                goods_id = #{goodsId},
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                warehouse_id = #{warehouseId},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="productionDate != null and productionDate != ''">
+                production_date = #{productionDate},
+            </if>
+            <if test="storageLocation != null and storageLocation != ''">
+                storage_location = #{storageLocation},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId},
+            </if>
+            <if test="inboundTime != null and inboundTime != ''">
+                inbound_time = #{inboundTime},
+            </if>
+        </set>
+        where record_id = #{recordId}
+    </update>
+
+    <!--通过主键删除-->
+    <update id="deleteById">
+        update inbound_record set del_mark=0 where record_id = #{recordId}
+    </update>
+
+</mapper>
+

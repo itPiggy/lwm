@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.piggy.lwm.mapper.UserMapper">
+
+    <resultMap type="com.piggy.lwm.domain.UserEntity" id="UserMap">
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_pwd" jdbcType="VARCHAR"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="permissionLevel" column="permission_level" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="baseSql">
+        select
+user_id, username, user_pwd, real_name, permission_level, create_time, update_time
+        from user
+        where del_mark = 1
+    </sql>
+    <sql id="condition">
+            <if test="user.userId != null">
+                and user_id = #{user.userId}
+            </if>
+            <if test="user.username != null and user.username != ''">
+                and username = #{user.username}
+            </if>
+            <if test="user.userPwd != null and user.userPwd != ''">
+                and user_pwd = #{user.userPwd}
+            </if>
+            <if test="user.realName != null and user.realName != ''">
+                and real_name = #{user.realName}
+            </if>
+            <if test="user.permissionLevel != null and user.permissionLevel != ''">
+                and permission_level = #{user.permissionLevel}
+            </if>
+            <if test="user.createTime != null and user.createTime != ''">
+                and create_time = #{user.createTime}
+            </if>
+            <if test="user.updateTime != null and user.updateTime != ''">
+                and update_time = #{user.updateTime}
+            </if>
+    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        <include refid="baseSql"></include>
+        and user_id = #{userId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        <include refid="baseSql"></include>
+        <include refid="condition"></include>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from user
+        where del_mark  = 1
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                and user_pwd = #{userPwd}
+            </if>
+            <if test="realName != null and realName != ''">
+                and real_name = #{realName}
+            </if>
+            <if test="permissionLevel != null and permissionLevel != ''">
+                and permission_level = #{permissionLevel}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime}
+            </if>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
+        values (#{username}, #{userPwd}, #{realName}, #{permissionLevel}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+username = values(username)user_pwd = values(user_pwd)real_name = values(real_name)permission_level = values(permission_level)create_time = values(create_time)update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="userPwd != null and userPwd != ''">
+                user_pwd = #{userPwd},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+            <if test="permissionLevel != null and permissionLevel != ''">
+                permission_level = #{permissionLevel},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <!--通过主键删除-->
+    <update id="deleteById">
+        update user set del_mark=0 where user_id = #{userId}
+    </update>
+
+</mapper>
+
