@@ -36,7 +36,7 @@ public interface GoodsMapper {
      * @param goods 查询条件
      * @return 总行数
      */
-    long count(GoodsEntity goods);
+    long count(@Param("goods") GoodsEntity goods);
 
     /**
      * 新增数据
