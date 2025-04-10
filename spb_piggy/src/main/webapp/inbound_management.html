@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>入库管理 - 苍龙(Azure Dragon)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="AzureDragon,苍龙,后台模板,后台管理系统,苍龙AzureDragon的HTML模板">
+    <meta name="description" content="AzureDragon是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid p-t-15">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-toolbar clearfix">
+                    <form class="pull-right search-bar" method="get" action="#!" role="form">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <input type="hidden" name="search_field" id="search-field" value="recordId">
+                                <button class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown"
+                                        type="button" aria-haspopup="true" aria-expanded="false">
+                                    入库单号 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" href="javascript:void(0)" data-field="recordId">入库单号</a></li>
+                                    <li><a tabindex="-1" href="javascript:void(0)" data-field="goodsId">货物 ID</a></li>
+                                </ul>
+                            </div>
+                            <input type="text" class="form-control" value="" name="keyword" placeholder="请输入名称">
+                        </div>
+                    </form>
+                    <div class="toolbar-btn-action">
+                        <a class="btn btn-primary m-r-5" href="inbound_add.html"><i class="mdi mdi-plus"></i> 新增</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>入库单号</th>
+                                <th>货物 ID</th>
+                                <th>仓库 ID</th>
+                                <th>入库数量</th>
+                                <th>生产日期</th>
+                                <th>存储位置</th>
+                                <th>操作员 ID</th>
+                                <th>入库时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>IN-20250410-001</td>
+                                <td>G-001</td>
+                                <td>WH-SH-001</td>
+                                <td>100</td>
+                                <td>2025-04-01</td>
+                                <td>A-01-02</td>
+                                <td>1</td>
+                                <td>2025-04-10 10:00:00</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-xs btn-default" href="#!" title="编辑"
+                                           data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                                        <a class="btn btn-xs btn-default" href="#!" title="删除"
+                                           data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul class="pagination" id="pagination">
+                        <li class="disabled"><span>«</span></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#1">2</a></li>
+                        <li><a href="#1">3</a></li>
+                        <li><a href="#1">4</a></li>
+                        <li><a href="#1">5</a></li>
+                        <li><a href="#1">6</a></li>
+                        <li><a href="#1">7</a></li>
+                        <li><a href="#1">8</a></li>
+                        <li class="disabled"><span>...</span></li>
+                        <li><a href="#!">14452</a></li>
+                        <li><a href="#!">14453</a></li>
+                        <li><a href="#!">»</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--分页查询组件-->
+<script src="js/pagination-comm.js"/>
+<script type="text/javascript">
+    $(function () {
+        loadPageInfo("http://localhost:8081/lwm/inbound/queryByPage")
+    });
+
+    /*显示行数据*/
+    function showTableInfo() {
+        //清空之前的数据
+        $("tbody").empty();
+
+        //遍历当前页的数据
+        for (let item of pageVO.content) {
+            //拼接表格行
+            let row = `
+            <tr>
+                <td>${item.recordId}</td>
+                <td>${item.goodsId}</td>
+                <td>${item.warehouseId}</td>
+                <td>${item.quantity}</td>
+                <td>${item.productionDate}</td>
+                <td>${item.storageLocation}</td>
+                <td>${item.operatorId}</td>
+                <td>${item.inboundTime}</td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                        <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                    </div>
+                </td>
+            </tr>
+            `;
+            //添加到表格中
+            $("tbody").append(row);
+        }
+    }
+</script>
+</body>
+</html>

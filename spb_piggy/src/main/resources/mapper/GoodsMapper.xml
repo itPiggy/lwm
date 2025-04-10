@@ -3,49 +3,41 @@
 <mapper namespace="com.piggy.lwm.mapper.GoodsMapper">
 
     <resultMap type="com.piggy.lwm.domain.GoodsEntity" id="GoodsMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
         <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
         <result property="category" column="category" jdbcType="VARCHAR"/>
         <result property="supplier" column="supplier" jdbcType="VARCHAR"/>
         <result property="shelfLife" column="shelf_life" jdbcType="INTEGER"/>
     </resultMap>
-
+    
     <sql id="baseSql">
-        select id,
-               goods_id,
-               goods_name,
-               category,
-               supplier,
-               shelf_life
+        select
+goods_id, goods_name, category, supplier, shelf_life
         from goods
         where del_mark = 0
     </sql>
     <sql id="condition">
-        <if test="goods.id != null">
-            and id = #{goods.id}
-        </if>
-        <if test="goods.goodsId != null and goods.goodsId != ''">
-            and goods_id = #{goods.goodsId}
-        </if>
-        <if test="goods.goodsName != null and goods.goodsName != ''">
-            and goods_name = #{goods.goodsName}
-        </if>
-        <if test="goods.category != null and goods.category != ''">
-            and category = #{goods.category}
-        </if>
-        <if test="goods.supplier != null and goods.supplier != ''">
-            and supplier = #{goods.supplier}
-        </if>
-        <if test="goods.shelfLife != null">
-            and shelf_life = #{goods.shelfLife}
-        </if>
+            <if test="goods.goodsId != null and goods.goodsId != ''">
+                and goods_id = #{goods.goodsId}
+            </if>
+            <if test="goods.goodsName != null and goods.goodsName != ''">
+                and goods_name = #{goods.goodsName}
+            </if>
+            <if test="goods.category != null and goods.category != ''">
+                and category = #{goods.category}
+            </if>
+            <if test="goods.supplier != null and goods.supplier != ''">
+                and supplier = #{goods.supplier}
+            </if>
+            <if test="goods.shelfLife != null">
+                and shelf_life = #{goods.shelfLife}
+            </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="GoodsMap">
         <include refid="baseSql"></include>
-        and id = #{id}
+        and goods_id = #{goodsId}
     </select>
 
     <!--查询指定行数据-->
@@ -58,60 +50,41 @@
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)
-        from goods
-        where del_mark = 0
-        <if test="id != null">
-            and id = #{id}
-        </if>
-        <if test="goodsId != null and goodsId != ''">
-            and goods_id = #{goodsId}
-        </if>
-        <if test="goodsName != null and goodsName != ''">
-            and goods_name = #{goodsName}
-        </if>
-        <if test="category != null and category != ''">
-            and category = #{category}
-        </if>
-        <if test="supplier != null and supplier != ''">
-            and supplier = #{supplier}
-        </if>
-        <if test="shelfLife != null">
-            and shelf_life = #{shelfLife}
-        </if>
+        from (
+        <include refid="baseSql"></include>
+        <include refid="condition"></include>
+        ) t
+
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into goods(goods_id, goods_name, category, supplier, shelf_life)
-        values (#{goodsId}, #{goodsName}, #{category}, #{supplier}, #{shelfLife})
+    <insert id="insert" keyProperty="goodsId" useGeneratedKeys="true">
+        insert into goods(goods_name, category, supplier, shelf_life)
+        values (#{goodsName}, #{category}, #{supplier}, #{shelfLife})
     </insert>
 
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into goods(goods_id, goods_name, category, supplier, shelf_life)
+    <insert id="insertBatch" keyProperty="goodsId" useGeneratedKeys="true">
+        insert into goods(goods_name, category, supplier, shelf_life)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.goodsId}, #{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
+        (#{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into goods(goods_id, goods_name, category, supplier, shelf_life)
+    <insert id="insertOrUpdateBatch" keyProperty="goodsId" useGeneratedKeys="true">
+        insert into goods(goods_name, category, supplier, shelf_life)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.goodsId}, #{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
+            (#{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
         </foreach>
         on duplicate key update
-        goods_id = values(goods_id)goods_name = values(goods_name)category = values(category)supplier =
-        values(supplier)shelf_life = values(shelf_life)
+goods_name = values(goods_name)category = values(category)supplier = values(supplier)shelf_life = values(shelf_life)
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update goods
         <set>
-            <if test="goodsId != null and goodsId != ''">
-                goods_id = #{goodsId},
-            </if>
             <if test="goodsName != null and goodsName != ''">
                 goods_name = #{goodsName},
             </if>
@@ -125,14 +98,12 @@
                 shelf_life = #{shelfLife},
             </if>
         </set>
-        where id = #{id}
+        where goods_id = #{goodsId}
     </update>
 
     <!--通过主键删除，物理删除-->
     <update id="deleteById">
-        update goods
-        set del_mark = 1
-        where id = #{id}
+        update goods set del_mark=0 where goods_id = #{goodsId}
     </update>
 
 </mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>添加出库信息 - 苍龙(Azure Dragon)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="AzureDragon,苍龙,后台模板,后台管理系统,苍龙HTML模板">
+    <meta name="description" content="AzureDragon是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
+    <!--标签插件-->
+    <link rel="stylesheet" href="js/jquery-tags-input/jquery.tagsinput.min.css">
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid p-t-15">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <form action="#!" method="post" class="row">
+                        <div class="form-group col-md-12">
+                            <label for="recordId">出库单号</label>
+                            <input type="text" class="form-control" id="recordId" name="recordId" value="" placeholder="请输入出库单号（规则：OUT-日期-序号）" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="goodsId">货物 ID</label>
+                            <input type="text" class="form-control" id="goodsId" name="goodsId" value="" placeholder="请输入货物 ID" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="warehouseId">仓库 ID</label>
+                            <input type="text" class="form-control" id="warehouseId" name="warehouseId" value="" placeholder="请输入仓库 ID" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="quantity">出库数量</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="" placeholder="请输入出库数量" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="operatorId">操作员 ID</label>
+                            <input type="number" class="form-control" id="operatorId" name="operatorId" value="" placeholder="请输入操作员 ID" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="button" onclick="addOutboundItem()" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                            <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!--标签插件-->
+<script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript">
+    // 定义添加出库项目的方法
+    function addOutboundItem(){
+        // 封装提交数据
+        var params = {
+            "recordId": $("#recordId").val(),
+            "goodsId": $("#goodsId").val(),
+            "warehouseId": $("#warehouseId").val(),
+            "quantity": $("#quantity").val(),
+            "operatorId": $("#operatorId").val()
+        }
+        // 发送请求
+        $.getJSON("lwm/outbound/add", params, function (data){
+            // 判断请求是否成功
+            if (data.code == 200){
+                // 提示信息
+                alert("添加成功")
+                // 跳转到列表页面
+                location.href = "outbound_management.html";
+            } else {
+                // 提示信息
+                alert(data.msg)
+            }
+        });
+    }
+</script>
+</body>
+</html>
