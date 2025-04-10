@@ -9,17 +9,17 @@ import java.util.List;
  * (User)表数据库访问层
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 public interface UserMapper {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param userId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    UserEntity queryById(Integer userId);
+    UserEntity queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -74,10 +74,10 @@ public interface UserMapper {
     /**
      * 通过主键删除数据
      *
-     * @param userId 主键
+     * @param id 主键
      * @return 影响行数
      */
-    int deleteById(Integer userId);
+    int deleteById(Integer id);
 
 }
 

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (InboundRecord)表控制层
  *
  * @author makejava
- * @since 2025-04-08 15:38:36
+ * @since 2025-04-10 14:39:42
  */
 @RestController
 @RequestMapping("inboundRecord")
@@ -59,7 +59,7 @@ public class InboundRecordController {
      * @return 单条数据
      */
     @RequestMapping("queryById/{id}")
-    public ReturnVO queryById(@PathVariable("id") String id) {
+    public ReturnVO queryById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //查询单个
@@ -125,7 +125,7 @@ public class InboundRecordController {
      * @return 删除是否成功
      */
     @RequestMapping("deleteById/{id}")
-    public ReturnVO deleteById(@PathVariable("id") String id) {
+    public ReturnVO deleteById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //删除

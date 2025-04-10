@@ -3,6 +3,7 @@
 <mapper namespace="com.piggy.lwm.mapper.UserMapper">
 
     <resultMap type="com.piggy.lwm.domain.UserEntity" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="userPwd" column="user_pwd" jdbcType="VARCHAR"/>
@@ -11,41 +12,50 @@
         <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="VARCHAR"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-user_id, username, user_pwd, real_name, permission_level, create_time, update_time
+        select id,
+               user_id,
+               username,
+               user_pwd,
+               real_name,
+               permission_level,
+               create_time,
+               update_time
         from user
-        where del_mark = 1
+        where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="user.userId != null">
-                and user_id = #{user.userId}
-            </if>
-            <if test="user.username != null and user.username != ''">
-                and username = #{user.username}
-            </if>
-            <if test="user.userPwd != null and user.userPwd != ''">
-                and user_pwd = #{user.userPwd}
-            </if>
-            <if test="user.realName != null and user.realName != ''">
-                and real_name = #{user.realName}
-            </if>
-            <if test="user.permissionLevel != null and user.permissionLevel != ''">
-                and permission_level = #{user.permissionLevel}
-            </if>
-            <if test="user.createTime != null and user.createTime != ''">
-                and create_time = #{user.createTime}
-            </if>
-            <if test="user.updateTime != null and user.updateTime != ''">
-                and update_time = #{user.updateTime}
-            </if>
+        <if test="user.id != null">
+            and id = #{user.id}
+        </if>
+        <if test="user.userId != null">
+            and user_id = #{user.userId}
+        </if>
+        <if test="user.username != null and user.username != ''">
+            and username = #{user.username}
+        </if>
+        <if test="user.userPwd != null and user.userPwd != ''">
+            and user_pwd = #{user.userPwd}
+        </if>
+        <if test="user.realName != null and user.realName != ''">
+            and real_name = #{user.realName}
+        </if>
+        <if test="user.permissionLevel != null and user.permissionLevel != ''">
+            and permission_level = #{user.permissionLevel}
+        </if>
+        <if test="user.createTime != null and user.createTime != ''">
+            and create_time = #{user.createTime}
+        </if>
+        <if test="user.updateTime != null and user.updateTime != ''">
+            and update_time = #{user.updateTime}
+        </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
         <include refid="baseSql"></include>
-        and user_id = #{userId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -59,58 +69,68 @@ user_id, username, user_pwd, real_name, permission_level, create_time, update_ti
     <select id="count" resultType="java.lang.Long">
         select count(1)
         from user
-        where del_mark  = 1
-            <if test="userId != null">
-                and user_id = #{userId}
-            </if>
-            <if test="username != null and username != ''">
-                and username = #{username}
-            </if>
-            <if test="userPwd != null and userPwd != ''">
-                and user_pwd = #{userPwd}
-            </if>
-            <if test="realName != null and realName != ''">
-                and real_name = #{realName}
-            </if>
-            <if test="permissionLevel != null and permissionLevel != ''">
-                and permission_level = #{permissionLevel}
-            </if>
-            <if test="createTime != null and createTime != ''">
-                and create_time = #{createTime}
-            </if>
-            <if test="updateTime != null and updateTime != ''">
-                and update_time = #{updateTime}
-            </if>
+        where del_mark = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="username != null and username != ''">
+            and username = #{username}
+        </if>
+        <if test="userPwd != null and userPwd != ''">
+            and user_pwd = #{userPwd}
+        </if>
+        <if test="realName != null and realName != ''">
+            and real_name = #{realName}
+        </if>
+        <if test="permissionLevel != null and permissionLevel != ''">
+            and permission_level = #{permissionLevel}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            and create_time = #{createTime}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            and update_time = #{updateTime}
+        </if>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
-        values (#{username}, #{userPwd}, #{realName}, #{permissionLevel}, #{createTime}, #{updateTime})
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user(user_id, username, user_pwd, real_name, permission_level, create_time, update_time)
+        values (#{userId}, #{username}, #{userPwd}, #{realName}, #{permissionLevel}, #{createTime}, #{updateTime})
     </insert>
 
-    <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user(user_id, username, user_pwd, real_name, permission_level, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel},
+            #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, user_pwd, real_name, permission_level, create_time, update_time)
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user(user_id, username, user_pwd, real_name, permission_level, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.userId}, #{entity.username}, #{entity.userPwd}, #{entity.realName}, #{entity.permissionLevel},
+            #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
-username = values(username)user_pwd = values(user_pwd)real_name = values(real_name)permission_level = values(permission_level)create_time = values(create_time)update_time = values(update_time)
+        user_id = values(user_id)username = values(username)user_pwd = values(user_pwd)real_name =
+        values(real_name)permission_level = values(permission_level)create_time = values(create_time)update_time =
+        values(update_time)
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update user
         <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
             <if test="username != null and username != ''">
                 username = #{username},
             </if>
@@ -130,12 +150,14 @@ username = values(username)user_pwd = values(user_pwd)real_name = values(real_na
                 update_time = #{updateTime},
             </if>
         </set>
-        where user_id = #{userId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <update id="deleteById">
-        update user set del_mark=0 where user_id = #{userId}
+        update user
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>

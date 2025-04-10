@@ -1,5 +1,7 @@
 package com.piggy.lwm.util;
 
+import com.piggy.lwm.domain.GoodsEntity;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -74,6 +76,30 @@ public class AttFileUtil {
 			return "video/x-matroska";
 		}
 		
+		return null;
+	}
+
+	public static GoodsEntity generateGoodsId(GoodsEntity goods){
+		String format;
+		// 格式化时间格式
+		String formatTime = "yyyymmdd";
+		String time = new SimpleDateFormat(formatTime).format(new Date());
+		// 增数自增
+		count++;
+		// 判断所属商品的类型，来赋予不同的商品id
+		if (goods.getCategory().contains("日用品")){
+			format = "G-DAILY-" + time + "-" + count;
+			goods.setGoodsId(format);
+			return goods;
+		}else if (goods.getCategory().contains("电子产品")){
+			format = "G-ELEC-" + time + "-" + count;
+			goods.setGoodsId(format);
+			return goods;
+		} else if (goods.getCategory().contains("食品")) {
+			format = "G-FOOD-" + time + "-" + count;
+			goods.setGoodsId(format);
+			return goods;
+		}
 		return null;
 	}
 

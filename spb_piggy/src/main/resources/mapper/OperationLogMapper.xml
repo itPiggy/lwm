@@ -3,45 +3,48 @@
 <mapper namespace="com.piggy.lwm.mapper.OperationLogMapper">
 
     <resultMap type="com.piggy.lwm.domain.OperationLogEntity" id="OperationLogMap">
-        <result property="logId" column="log_id" jdbcType="INTEGER"/>
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="operationType" column="operation_type" jdbcType="VARCHAR"/>
         <result property="targetId" column="target_id" jdbcType="VARCHAR"/>
         <result property="details" column="details" jdbcType="VARCHAR"/>
         <result property="timestamp" column="timestamp" jdbcType="VARCHAR"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-log_id, user_id, operation_type, target_id, details, timestamp
+        select id,
+               user_id,
+               operation_type,
+               target_id,
+               details, timestamp
         from operation_log
-        where del_mark = 1
+        where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="operationLog.logId != null">
-                and log_id = #{operationLog.logId}
-            </if>
-            <if test="operationLog.userId != null">
-                and user_id = #{operationLog.userId}
-            </if>
-            <if test="operationLog.operationType != null and operationLog.operationType != ''">
-                and operation_type = #{operationLog.operationType}
-            </if>
-            <if test="operationLog.targetId != null and operationLog.targetId != ''">
-                and target_id = #{operationLog.targetId}
-            </if>
-            <if test="operationLog.details != null and operationLog.details != ''">
-                and details = #{operationLog.details}
-            </if>
-            <if test="operationLog.timestamp != null and operationLog.timestamp != ''">
-                and timestamp = #{operationLog.timestamp}
-            </if>
+        <if test="operationLog.id != null">
+            and id = #{operationLog.id}
+        </if>
+        <if test="operationLog.userId != null">
+            and user_id = #{operationLog.userId}
+        </if>
+        <if test="operationLog.operationType != null and operationLog.operationType != ''">
+            and operation_type = #{operationLog.operationType}
+        </if>
+        <if test="operationLog.targetId != null and operationLog.targetId != ''">
+            and target_id = #{operationLog.targetId}
+        </if>
+        <if test="operationLog.details != null and operationLog.details != ''">
+            and details = #{operationLog.details}
+        </if>
+        <if test="operationLog.timestamp != null and operationLog.timestamp != ''">
+            and timestamp = #{operationLog.timestamp}
+        </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="OperationLogMap">
         <include refid="baseSql"></include>
-        and log_id = #{logId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -55,49 +58,50 @@ log_id, user_id, operation_type, target_id, details, timestamp
     <select id="count" resultType="java.lang.Long">
         select count(1)
         from operation_log
-        where del_mark  = 1
-            <if test="logId != null">
-                and log_id = #{logId}
-            </if>
-            <if test="userId != null">
-                and user_id = #{userId}
-            </if>
-            <if test="operationType != null and operationType != ''">
-                and operation_type = #{operationType}
-            </if>
-            <if test="targetId != null and targetId != ''">
-                and target_id = #{targetId}
-            </if>
-            <if test="details != null and details != ''">
-                and details = #{details}
-            </if>
-            <if test="timestamp != null and timestamp != ''">
-                and timestamp = #{timestamp}
-            </if>
+        where del_mark = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="operationType != null and operationType != ''">
+            and operation_type = #{operationType}
+        </if>
+        <if test="targetId != null and targetId != ''">
+            and target_id = #{targetId}
+        </if>
+        <if test="details != null and details != ''">
+            and details = #{details}
+        </if>
+        <if test="timestamp != null and timestamp != ''">
+            and timestamp = #{timestamp}
+        </if>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="logId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into operation_log(user_id, operation_type, target_id, details, timestamp)
         values (#{userId}, #{operationType}, #{targetId}, #{details}, #{timestamp})
     </insert>
 
-    <insert id="insertBatch" keyProperty="logId" useGeneratedKeys="true">
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into operation_log(user_id, operation_type, target_id, details, timestamp)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}, #{entity.operationType}, #{entity.targetId}, #{entity.details}, #{entity.timestamp})
+            (#{entity.userId}, #{entity.operationType}, #{entity.targetId}, #{entity.details}, #{entity.timestamp})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="logId" useGeneratedKeys="true">
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into operation_log(user_id, operation_type, target_id, details, timestamp)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.operationType}, #{entity.targetId}, #{entity.details}, #{entity.timestamp})
         </foreach>
         on duplicate key update
-user_id = values(user_id)operation_type = values(operation_type)target_id = values(target_id)details = values(details)timestamp = values(timestamp)
+        user_id = values(user_id)operation_type = values(operation_type)target_id = values(target_id)details =
+        values(details)timestamp = values(timestamp)
     </insert>
 
     <!--通过主键修改数据-->
@@ -120,12 +124,14 @@ user_id = values(user_id)operation_type = values(operation_type)target_id = valu
                 timestamp = #{timestamp},
             </if>
         </set>
-        where log_id = #{logId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <update id="deleteById">
-        update operation_log set del_mark=0 where log_id = #{logId}
+        update operation_log
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (Warehouse)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 @Service("warehouseService")
 public class WarehouseServiceImpl implements WarehouseService {
@@ -27,12 +27,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     /**
      * 通过ID查询单条数据
      *
-     * @param whId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public WarehouseEntity queryById(String whId) {
-        return this.warehouseMapper.queryById(whId);
+    public WarehouseEntity queryById(Integer id) {
+        return this.warehouseMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     /**
      * 通过主键删除数据
      *
-     * @param whId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String whId) {
-        return this.warehouseMapper.deleteById(whId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.warehouseMapper.deleteById(id) > 0;
     }
 }

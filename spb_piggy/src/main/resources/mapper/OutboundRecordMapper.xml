@@ -3,6 +3,7 @@
 <mapper namespace="com.piggy.lwm.mapper.OutboundRecordMapper">
 
     <resultMap type="com.piggy.lwm.domain.OutboundRecordEntity" id="OutboundRecordMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="recordId" column="record_id" jdbcType="VARCHAR"/>
         <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
         <result property="warehouseId" column="warehouse_id" jdbcType="VARCHAR"/>
@@ -10,38 +11,46 @@
         <result property="operatorId" column="operator_id" jdbcType="INTEGER"/>
         <result property="outboundTime" column="outbound_time" jdbcType="VARCHAR"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-record_id, goods_id, warehouse_id, quantity, operator_id, outbound_time
+        select id,
+               record_id,
+               goods_id,
+               warehouse_id,
+               quantity,
+               operator_id,
+               outbound_time
         from outbound_record
-        where del_mark = 1
+        where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="outboundRecord.recordId != null and outboundRecord.recordId != ''">
-                and record_id = #{outboundRecord.recordId}
-            </if>
-            <if test="outboundRecord.goodsId != null and outboundRecord.goodsId != ''">
-                and goods_id = #{outboundRecord.goodsId}
-            </if>
-            <if test="outboundRecord.warehouseId != null and outboundRecord.warehouseId != ''">
-                and warehouse_id = #{outboundRecord.warehouseId}
-            </if>
-            <if test="outboundRecord.quantity != null">
-                and quantity = #{outboundRecord.quantity}
-            </if>
-            <if test="outboundRecord.operatorId != null">
-                and operator_id = #{outboundRecord.operatorId}
-            </if>
-            <if test="outboundRecord.outboundTime != null and outboundRecord.outboundTime != ''">
-                and outbound_time = #{outboundRecord.outboundTime}
-            </if>
+        <if test="outboundRecord.id != null">
+            and id = #{outboundRecord.id}
+        </if>
+        <if test="outboundRecord.recordId != null and outboundRecord.recordId != ''">
+            and record_id = #{outboundRecord.recordId}
+        </if>
+        <if test="outboundRecord.goodsId != null and outboundRecord.goodsId != ''">
+            and goods_id = #{outboundRecord.goodsId}
+        </if>
+        <if test="outboundRecord.warehouseId != null and outboundRecord.warehouseId != ''">
+            and warehouse_id = #{outboundRecord.warehouseId}
+        </if>
+        <if test="outboundRecord.quantity != null">
+            and quantity = #{outboundRecord.quantity}
+        </if>
+        <if test="outboundRecord.operatorId != null">
+            and operator_id = #{outboundRecord.operatorId}
+        </if>
+        <if test="outboundRecord.outboundTime != null and outboundRecord.outboundTime != ''">
+            and outbound_time = #{outboundRecord.outboundTime}
+        </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="OutboundRecordMap">
         <include refid="baseSql"></include>
-        and record_id = #{recordId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -55,55 +64,64 @@ record_id, goods_id, warehouse_id, quantity, operator_id, outbound_time
     <select id="count" resultType="java.lang.Long">
         select count(1)
         from outbound_record
-        where del_mark  = 1
-            <if test="recordId != null and recordId != ''">
-                and record_id = #{recordId}
-            </if>
-            <if test="goodsId != null and goodsId != ''">
-                and goods_id = #{goodsId}
-            </if>
-            <if test="warehouseId != null and warehouseId != ''">
-                and warehouse_id = #{warehouseId}
-            </if>
-            <if test="quantity != null">
-                and quantity = #{quantity}
-            </if>
-            <if test="operatorId != null">
-                and operator_id = #{operatorId}
-            </if>
-            <if test="outboundTime != null and outboundTime != ''">
-                and outbound_time = #{outboundTime}
-            </if>
+        where del_mark = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="recordId != null and recordId != ''">
+            and record_id = #{recordId}
+        </if>
+        <if test="goodsId != null and goodsId != ''">
+            and goods_id = #{goodsId}
+        </if>
+        <if test="warehouseId != null and warehouseId != ''">
+            and warehouse_id = #{warehouseId}
+        </if>
+        <if test="quantity != null">
+            and quantity = #{quantity}
+        </if>
+        <if test="operatorId != null">
+            and operator_id = #{operatorId}
+        </if>
+        <if test="outboundTime != null and outboundTime != ''">
+            and outbound_time = #{outboundTime}
+        </if>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="recordId" useGeneratedKeys="true">
-        insert into outbound_record(goods_id, warehouse_id, quantity, operator_id, outbound_time)
-        values (#{goodsId}, #{warehouseId}, #{quantity}, #{operatorId}, #{outboundTime})
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into outbound_record(record_id, goods_id, warehouse_id, quantity, operator_id, outbound_time)
+        values (#{recordId}, #{goodsId}, #{warehouseId}, #{quantity}, #{operatorId}, #{outboundTime})
     </insert>
 
-    <insert id="insertBatch" keyProperty="recordId" useGeneratedKeys="true">
-        insert into outbound_record(goods_id, warehouse_id, quantity, operator_id, outbound_time)
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into outbound_record(record_id, goods_id, warehouse_id, quantity, operator_id, outbound_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.operatorId}, #{entity.outboundTime})
+            (#{entity.recordId}, #{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.operatorId},
+            #{entity.outboundTime})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="recordId" useGeneratedKeys="true">
-        insert into outbound_record(goods_id, warehouse_id, quantity, operator_id, outbound_time)
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into outbound_record(record_id, goods_id, warehouse_id, quantity, operator_id, outbound_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.operatorId}, #{entity.outboundTime})
+            (#{entity.recordId}, #{entity.goodsId}, #{entity.warehouseId}, #{entity.quantity}, #{entity.operatorId},
+            #{entity.outboundTime})
         </foreach>
         on duplicate key update
-goods_id = values(goods_id)warehouse_id = values(warehouse_id)quantity = values(quantity)operator_id = values(operator_id)outbound_time = values(outbound_time)
+        record_id = values(record_id)goods_id = values(goods_id)warehouse_id = values(warehouse_id)quantity =
+        values(quantity)operator_id = values(operator_id)outbound_time = values(outbound_time)
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update outbound_record
         <set>
+            <if test="recordId != null and recordId != ''">
+                record_id = #{recordId},
+            </if>
             <if test="goodsId != null and goodsId != ''">
                 goods_id = #{goodsId},
             </if>
@@ -120,12 +138,14 @@ goods_id = values(goods_id)warehouse_id = values(warehouse_id)quantity = values(
                 outbound_time = #{outboundTime},
             </if>
         </set>
-        where record_id = #{recordId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <update id="deleteById">
-        update outbound_record set del_mark=0 where record_id = #{recordId}
+        update outbound_record
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>
