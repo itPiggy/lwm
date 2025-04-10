@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (Warehouse)表控制层
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 @RestController
 @RequestMapping("warehouse")
@@ -59,7 +59,7 @@ public class WarehouseController {
      * @return 单条数据
      */
     @RequestMapping("queryById/{id}")
-    public ReturnVO queryById(@PathVariable("id") String id) {
+    public ReturnVO queryById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //查询单个
@@ -125,7 +125,7 @@ public class WarehouseController {
      * @return 删除是否成功
      */
     @RequestMapping("deleteById/{id}")
-    public ReturnVO deleteById(@PathVariable("id") String id) {
+    public ReturnVO deleteById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //删除

@@ -9,17 +9,17 @@ import java.util.List;
  * (Warehouse)表数据库访问层
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 public interface WarehouseMapper {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param whId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    WarehouseEntity queryById(String whId);
+    WarehouseEntity queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -74,10 +74,10 @@ public interface WarehouseMapper {
     /**
      * 通过主键删除数据
      *
-     * @param whId 主键
+     * @param id 主键
      * @return 影响行数
      */
-    int deleteById(String whId);
+    int deleteById(Integer id);
 
 }
 

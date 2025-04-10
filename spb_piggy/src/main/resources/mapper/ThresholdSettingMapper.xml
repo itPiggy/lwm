@@ -3,33 +3,39 @@
 <mapper namespace="com.piggy.lwm.mapper.ThresholdSettingMapper">
 
     <resultMap type="com.piggy.lwm.domain.ThresholdSettingEntity" id="ThresholdSettingMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
         <result property="warehouseId" column="warehouse_id" jdbcType="VARCHAR"/>
         <result property="minQuantity" column="min_quantity" jdbcType="INTEGER"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-goods_id, warehouse_id, min_quantity
+        select id,
+               goods_id,
+               warehouse_id,
+               min_quantity
         from threshold_setting
-        where del_mark = 1
+        where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="thresholdSetting.goodsId != null and thresholdSetting.goodsId != ''">
-                and goods_id = #{thresholdSetting.goodsId}
-            </if>
-            <if test="thresholdSetting.warehouseId != null and thresholdSetting.warehouseId != ''">
-                and warehouse_id = #{thresholdSetting.warehouseId}
-            </if>
-            <if test="thresholdSetting.minQuantity != null">
-                and min_quantity = #{thresholdSetting.minQuantity}
-            </if>
+        <if test="thresholdSetting.id != null">
+            and id = #{thresholdSetting.id}
+        </if>
+        <if test="thresholdSetting.goodsId != null and thresholdSetting.goodsId != ''">
+            and goods_id = #{thresholdSetting.goodsId}
+        </if>
+        <if test="thresholdSetting.warehouseId != null and thresholdSetting.warehouseId != ''">
+            and warehouse_id = #{thresholdSetting.warehouseId}
+        </if>
+        <if test="thresholdSetting.minQuantity != null">
+            and min_quantity = #{thresholdSetting.minQuantity}
+        </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="ThresholdSettingMap">
         <include refid="baseSql"></include>
-        and goods_id = #{goodsId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -43,56 +49,67 @@ goods_id, warehouse_id, min_quantity
     <select id="count" resultType="java.lang.Long">
         select count(1)
         from threshold_setting
-        where del_mark  = 1
-            <if test="goodsId != null and goodsId != ''">
-                and goods_id = #{goodsId}
-            </if>
-            <if test="warehouseId != null and warehouseId != ''">
-                and warehouse_id = #{warehouseId}
-            </if>
-            <if test="minQuantity != null">
-                and min_quantity = #{minQuantity}
-            </if>
+        where del_mark = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="goodsId != null and goodsId != ''">
+            and goods_id = #{goodsId}
+        </if>
+        <if test="warehouseId != null and warehouseId != ''">
+            and warehouse_id = #{warehouseId}
+        </if>
+        <if test="minQuantity != null">
+            and min_quantity = #{minQuantity}
+        </if>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="goodsId" useGeneratedKeys="true">
-        insert into threshold_setting(min_quantity)
-        values (#{minQuantity})
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into threshold_setting(goods_id, warehouse_id, min_quantity)
+        values (#{goodsId}, #{warehouseId}, #{minQuantity})
     </insert>
 
-    <insert id="insertBatch" keyProperty="goodsId" useGeneratedKeys="true">
-        insert into threshold_setting(min_quantity)
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into threshold_setting(goods_id, warehouse_id, min_quantity)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.minQuantity})
+            (#{entity.goodsId}, #{entity.warehouseId}, #{entity.minQuantity})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="goodsId" useGeneratedKeys="true">
-        insert into threshold_setting(min_quantity)
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into threshold_setting(goods_id, warehouse_id, min_quantity)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.minQuantity})
+            (#{entity.goodsId}, #{entity.warehouseId}, #{entity.minQuantity})
         </foreach>
         on duplicate key update
-min_quantity = values(min_quantity)
+        goods_id = values(goods_id)warehouse_id = values(warehouse_id)min_quantity = values(min_quantity)
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update threshold_setting
         <set>
+            <if test="goodsId != null and goodsId != ''">
+                goods_id = #{goodsId},
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                warehouse_id = #{warehouseId},
+            </if>
             <if test="minQuantity != null">
                 min_quantity = #{minQuantity},
             </if>
         </set>
-        where goods_id = #{goodsId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <update id="deleteById">
-        update threshold_setting set del_mark=0 where goods_id = #{goodsId}
+        update threshold_setting
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>

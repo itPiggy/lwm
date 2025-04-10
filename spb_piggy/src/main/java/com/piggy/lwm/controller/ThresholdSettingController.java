@@ -2,12 +2,11 @@ package com.piggy.lwm.controller;
 
 import com.piggy.lwm.domain.ThresholdSettingEntity;
 import com.piggy.lwm.service.ThresholdSettingService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.piggy.lwm.util.ReturnVO;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -15,7 +14,7 @@ import javax.annotation.Resource;
  * (ThresholdSetting)表控制层
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:42
  */
 @RestController
 @RequestMapping("thresholdSetting")
@@ -59,7 +58,7 @@ public class ThresholdSettingController {
      * @return 单条数据
      */
     @RequestMapping("queryById/{id}")
-    public ReturnVO queryById(@PathVariable("id") String id) {
+    public ReturnVO queryById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //查询单个
@@ -125,7 +124,7 @@ public class ThresholdSettingController {
      * @return 删除是否成功
      */
     @RequestMapping("deleteById/{id}")
-    public ReturnVO deleteById(@PathVariable("id") String id) {
+    public ReturnVO deleteById(@PathVariable("id") Integer id) {
         //定义失败的返回对象
         ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
         //删除

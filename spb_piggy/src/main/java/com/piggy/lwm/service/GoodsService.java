@@ -8,17 +8,17 @@ import org.springframework.data.domain.PageRequest;
  * (Goods)表服务接口
  *
  * @author makejava
- * @since 2025-04-08 15:38:07
+ * @since 2025-04-10 14:39:42
  */
 public interface GoodsService {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    GoodsEntity queryById(String goodsId);
+    GoodsEntity queryById(Integer id);
 
     /**
      * 分页查询
@@ -47,9 +47,9 @@ public interface GoodsService {
     /**
      * 通过主键删除数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(String goodsId);
+    boolean deleteById(Integer id);
 
 }

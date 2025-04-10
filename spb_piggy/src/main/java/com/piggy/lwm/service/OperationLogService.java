@@ -8,17 +8,17 @@ import org.springframework.data.domain.PageRequest;
  * (OperationLog)表服务接口
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:59:44
  */
 public interface OperationLogService {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param logId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    OperationLogEntity queryById(Integer logId);
+    OperationLogEntity queryById(Integer id);
 
     /**
      * 分页查询
@@ -47,9 +47,9 @@ public interface OperationLogService {
     /**
      * 通过主键删除数据
      *
-     * @param logId 主键
+     * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer logId);
+    boolean deleteById(Integer id);
 
 }

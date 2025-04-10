@@ -3,6 +3,7 @@ package com.piggy.lwm.service.impl;
 import com.piggy.lwm.domain.GoodsEntity;
 import com.piggy.lwm.mapper.GoodsMapper;
 import com.piggy.lwm.service.GoodsService;
+import com.piggy.lwm.util.AttFileUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import javax.annotation.Resource;
  * (Goods)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:07
+ * @since 2025-04-10 14:39:42
  */
 @Service("goodsService")
 public class GoodsServiceImpl implements GoodsService {
@@ -27,12 +28,12 @@ public class GoodsServiceImpl implements GoodsService {
     /**
      * 通过ID查询单条数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public GoodsEntity queryById(String goodsId) {
-        return this.goodsMapper.queryById(goodsId);
+    public GoodsEntity queryById(Integer id) {
+        return this.goodsMapper.queryById(id);
     }
 
     /**
@@ -74,7 +75,8 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public boolean insert(GoodsEntity goods) {
-        return this.goodsMapper.insert(goods) > 0;
+        GoodsEntity goodsEntity = AttFileUtil.generateGoodsId(goods);
+        return this.goodsMapper.insert(goodsEntity) > 0;
     }
 
     /**
@@ -91,11 +93,11 @@ public class GoodsServiceImpl implements GoodsService {
     /**
      * 通过主键删除数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String goodsId) {
-        return this.goodsMapper.deleteById(goodsId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.goodsMapper.deleteById(id) > 0;
     }
 }

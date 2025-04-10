@@ -3,41 +3,49 @@
 <mapper namespace="com.piggy.lwm.mapper.WarehouseMapper">
 
     <resultMap type="com.piggy.lwm.domain.WarehouseEntity" id="WarehouseMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="whId" column="wh_id" jdbcType="VARCHAR"/>
         <result property="whUserId" column="wh_user_id" jdbcType="INTEGER"/>
         <result property="whName" column="wh_name" jdbcType="VARCHAR"/>
         <result property="whCapacity" column="wh_capacity" jdbcType="INTEGER"/>
         <result property="whLocation" column="wh_location" jdbcType="VARCHAR"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-wh_id, wh_user_id, wh_name, wh_capacity, wh_location
+        select id,
+               wh_id,
+               wh_user_id,
+               wh_name,
+               wh_capacity,
+               wh_location
         from warehouse
-        where del_mark = 1
+        where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="warehouse.whId != null and warehouse.whId != ''">
-                and wh_id = #{warehouse.whId}
-            </if>
-            <if test="warehouse.whUserId != null">
-                and wh_user_id = #{warehouse.whUserId}
-            </if>
-            <if test="warehouse.whName != null and warehouse.whName != ''">
-                and wh_name = #{warehouse.whName}
-            </if>
-            <if test="warehouse.whCapacity != null">
-                and wh_capacity = #{warehouse.whCapacity}
-            </if>
-            <if test="warehouse.whLocation != null and warehouse.whLocation != ''">
-                and wh_location = #{warehouse.whLocation}
-            </if>
+        <if test="warehouse.id != null">
+            and id = #{warehouse.id}
+        </if>
+        <if test="warehouse.whId != null and warehouse.whId != ''">
+            and wh_id = #{warehouse.whId}
+        </if>
+        <if test="warehouse.whUserId != null">
+            and wh_user_id = #{warehouse.whUserId}
+        </if>
+        <if test="warehouse.whName != null and warehouse.whName != ''">
+            and wh_name = #{warehouse.whName}
+        </if>
+        <if test="warehouse.whCapacity != null">
+            and wh_capacity = #{warehouse.whCapacity}
+        </if>
+        <if test="warehouse.whLocation != null and warehouse.whLocation != ''">
+            and wh_location = #{warehouse.whLocation}
+        </if>
     </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="WarehouseMap">
         <include refid="baseSql"></include>
-        and wh_id = #{whId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
@@ -51,52 +59,59 @@ wh_id, wh_user_id, wh_name, wh_capacity, wh_location
     <select id="count" resultType="java.lang.Long">
         select count(1)
         from warehouse
-        where del_mark  = 1
-            <if test="whId != null and whId != ''">
-                and wh_id = #{whId}
-            </if>
-            <if test="whUserId != null">
-                and wh_user_id = #{whUserId}
-            </if>
-            <if test="whName != null and whName != ''">
-                and wh_name = #{whName}
-            </if>
-            <if test="whCapacity != null">
-                and wh_capacity = #{whCapacity}
-            </if>
-            <if test="whLocation != null and whLocation != ''">
-                and wh_location = #{whLocation}
-            </if>
+        where del_mark = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="whId != null and whId != ''">
+            and wh_id = #{whId}
+        </if>
+        <if test="whUserId != null">
+            and wh_user_id = #{whUserId}
+        </if>
+        <if test="whName != null and whName != ''">
+            and wh_name = #{whName}
+        </if>
+        <if test="whCapacity != null">
+            and wh_capacity = #{whCapacity}
+        </if>
+        <if test="whLocation != null and whLocation != ''">
+            and wh_location = #{whLocation}
+        </if>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="whId" useGeneratedKeys="true">
-        insert into warehouse(wh_user_id, wh_name, wh_capacity, wh_location)
-        values (#{whUserId}, #{whName}, #{whCapacity}, #{whLocation})
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into warehouse(wh_id, wh_user_id, wh_name, wh_capacity, wh_location)
+        values (#{whId}, #{whUserId}, #{whName}, #{whCapacity}, #{whLocation})
     </insert>
 
-    <insert id="insertBatch" keyProperty="whId" useGeneratedKeys="true">
-        insert into warehouse(wh_user_id, wh_name, wh_capacity, wh_location)
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into warehouse(wh_id, wh_user_id, wh_name, wh_capacity, wh_location)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.whUserId}, #{entity.whName}, #{entity.whCapacity}, #{entity.whLocation})
+            (#{entity.whId}, #{entity.whUserId}, #{entity.whName}, #{entity.whCapacity}, #{entity.whLocation})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="whId" useGeneratedKeys="true">
-        insert into warehouse(wh_user_id, wh_name, wh_capacity, wh_location)
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into warehouse(wh_id, wh_user_id, wh_name, wh_capacity, wh_location)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.whUserId}, #{entity.whName}, #{entity.whCapacity}, #{entity.whLocation})
+            (#{entity.whId}, #{entity.whUserId}, #{entity.whName}, #{entity.whCapacity}, #{entity.whLocation})
         </foreach>
         on duplicate key update
-wh_user_id = values(wh_user_id)wh_name = values(wh_name)wh_capacity = values(wh_capacity)wh_location = values(wh_location)
+        wh_id = values(wh_id)wh_user_id = values(wh_user_id)wh_name = values(wh_name)wh_capacity =
+        values(wh_capacity)wh_location = values(wh_location)
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update warehouse
         <set>
+            <if test="whId != null and whId != ''">
+                wh_id = #{whId},
+            </if>
             <if test="whUserId != null">
                 wh_user_id = #{whUserId},
             </if>
@@ -110,12 +125,14 @@ wh_user_id = values(wh_user_id)wh_name = values(wh_name)wh_capacity = values(wh_
                 wh_location = #{whLocation},
             </if>
         </set>
-        where wh_id = #{whId}
+        where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <update id="deleteById">
-        update warehouse set del_mark=0 where wh_id = #{whId}
+        update warehouse
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>

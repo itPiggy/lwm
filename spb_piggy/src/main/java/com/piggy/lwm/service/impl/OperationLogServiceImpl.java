@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (OperationLog)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:59:44
  */
 @Service("operationLogService")
 public class OperationLogServiceImpl implements OperationLogService {
@@ -27,12 +27,12 @@ public class OperationLogServiceImpl implements OperationLogService {
     /**
      * 通过ID查询单条数据
      *
-     * @param logId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public OperationLogEntity queryById(Integer logId) {
-        return this.operationLogMapper.queryById(logId);
+    public OperationLogEntity queryById(Integer id) {
+        return this.operationLogMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class OperationLogServiceImpl implements OperationLogService {
     /**
      * 通过主键删除数据
      *
-     * @param logId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer logId) {
-        return this.operationLogMapper.deleteById(logId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.operationLogMapper.deleteById(id) > 0;
     }
 }

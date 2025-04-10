@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (User)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
     /**
      * 通过ID查询单条数据
      *
-     * @param userId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public UserEntity queryById(Integer userId) {
-        return this.userMapper.queryById(userId);
+    public UserEntity queryById(Integer id) {
+        return this.userMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class UserServiceImpl implements UserService {
     /**
      * 通过主键删除数据
      *
-     * @param userId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer userId) {
-        return this.userMapper.deleteById(userId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.userMapper.deleteById(id) > 0;
     }
 }

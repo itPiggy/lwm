@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (InboundRecord)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:36
+ * @since 2025-04-10 14:39:42
  */
 @Service("inboundRecordService")
 public class InboundRecordServiceImpl implements InboundRecordService {
@@ -27,12 +27,12 @@ public class InboundRecordServiceImpl implements InboundRecordService {
     /**
      * 通过ID查询单条数据
      *
-     * @param recordId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public InboundRecordEntity queryById(String recordId) {
-        return this.inboundRecordMapper.queryById(recordId);
+    public InboundRecordEntity queryById(Integer id) {
+        return this.inboundRecordMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class InboundRecordServiceImpl implements InboundRecordService {
     /**
      * 通过主键删除数据
      *
-     * @param recordId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String recordId) {
-        return this.inboundRecordMapper.deleteById(recordId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.inboundRecordMapper.deleteById(id) > 0;
     }
 }

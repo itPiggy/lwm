@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (Inventory)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:42
  */
 @Service("inventoryService")
 public class InventoryServiceImpl implements InventoryService {
@@ -27,12 +27,12 @@ public class InventoryServiceImpl implements InventoryService {
     /**
      * 通过ID查询单条数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public InventoryEntity queryById(String goodsId) {
-        return this.inventoryMapper.queryById(goodsId);
+    public InventoryEntity queryById(Integer id) {
+        return this.inventoryMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class InventoryServiceImpl implements InventoryService {
     /**
      * 通过主键删除数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String goodsId) {
-        return this.inventoryMapper.deleteById(goodsId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.inventoryMapper.deleteById(id) > 0;
     }
 }

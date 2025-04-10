@@ -9,17 +9,17 @@ import java.util.List;
  * (ThresholdSetting)表数据库访问层
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:42
  */
 public interface ThresholdSettingMapper {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    ThresholdSettingEntity queryById(String goodsId);
+    ThresholdSettingEntity queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -74,10 +74,10 @@ public interface ThresholdSettingMapper {
     /**
      * 通过主键删除数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 影响行数
      */
-    int deleteById(String goodsId);
+    int deleteById(Integer id);
 
 }
 

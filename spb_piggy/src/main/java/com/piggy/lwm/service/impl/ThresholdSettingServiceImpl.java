@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * (ThresholdSetting)表服务实现类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:39:43
  */
 @Service("thresholdSettingService")
 public class ThresholdSettingServiceImpl implements ThresholdSettingService {
@@ -27,12 +27,12 @@ public class ThresholdSettingServiceImpl implements ThresholdSettingService {
     /**
      * 通过ID查询单条数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 实例对象
      */
     @Override
-    public ThresholdSettingEntity queryById(String goodsId) {
-        return this.thresholdSettingMapper.queryById(goodsId);
+    public ThresholdSettingEntity queryById(Integer id) {
+        return this.thresholdSettingMapper.queryById(id);
     }
 
     /**
@@ -91,11 +91,11 @@ public class ThresholdSettingServiceImpl implements ThresholdSettingService {
     /**
      * 通过主键删除数据
      *
-     * @param goodsId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String goodsId) {
-        return this.thresholdSettingMapper.deleteById(goodsId) > 0;
+    public boolean deleteById(Integer id) {
+        return this.thresholdSettingMapper.deleteById(id) > 0;
     }
 }

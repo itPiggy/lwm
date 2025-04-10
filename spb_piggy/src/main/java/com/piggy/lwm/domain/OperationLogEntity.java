@@ -7,15 +7,15 @@ import lombok.Data;
  * (OperationLog)实体类
  *
  * @author makejava
- * @since 2025-04-08 15:38:55
+ * @since 2025-04-10 14:59:44
  */
 @Data
 public class OperationLogEntity implements Serializable {
-    private static final long serialVersionUID = 654926298247154552L;
+    private static final long serialVersionUID = -85545187923008797L;
 /**
-     * 日志ID（自增）
+     * 自增主键ID
      */
-    private Integer logId;
+    private Integer id;
 /**
      * 操作用户ID
      */
