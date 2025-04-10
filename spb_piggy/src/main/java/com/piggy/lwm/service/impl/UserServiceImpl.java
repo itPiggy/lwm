@@ -3,6 +3,7 @@ package com.piggy.lwm.service.impl;
 import com.piggy.lwm.domain.UserEntity;
 import com.piggy.lwm.mapper.UserMapper;
 import com.piggy.lwm.service.UserService;
+import com.piggy.lwm.util.PasswordUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
@@ -97,5 +98,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteById(Integer id) {
         return this.userMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public UserEntity login(UserEntity user) {
+        // 将密码进行SHA256哈希处理
+        user.setUserPwd(PasswordUtil.digestPwdSHA256(user.getUserPwd()));
+        return this.userMapper.login(user);
     }
 }

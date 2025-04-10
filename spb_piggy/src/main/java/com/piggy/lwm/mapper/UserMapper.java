@@ -79,5 +79,7 @@ public interface UserMapper {
      */
     int deleteById(Integer id);
 
+    // 登录
+    UserEntity login(UserEntity user);
 }
 

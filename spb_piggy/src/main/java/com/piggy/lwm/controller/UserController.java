@@ -2,12 +2,11 @@ package com.piggy.lwm.controller;
 
 import com.piggy.lwm.domain.UserEntity;
 import com.piggy.lwm.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.piggy.lwm.util.ReturnVO;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -137,6 +136,22 @@ public class UserController {
         returnVO.setCode(1);
         returnVO.setMsg("删除成功");
         
+        return returnVO;
+    }
+
+    @RequestMapping("login")
+    public ReturnVO login(UserEntity user) {
+        //定义失败的返回对象
+        ReturnVO returnVO = ReturnVO.getNodataFoundReturnVO();
+        // 登录
+        UserEntity foundUser = this.userService.login(user);
+        //判断用户是否存在
+        if(foundUser == null){
+            return returnVO; // 用户不存在，返回失败信息
+        }
+        //查询成功
+        returnVO = ReturnVO.getSuccessDataReturnVO(foundUser);
+
         return returnVO;
     }
 

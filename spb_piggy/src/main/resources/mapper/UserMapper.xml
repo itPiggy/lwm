@@ -160,5 +160,12 @@
         where id = #{id}
     </update>
 
+    <!--登录-->
+    <select id="login" resultMap="UserMap" parameterType="com.piggy.lwm.domain.UserEntity">
+        <include refid="baseSql"></include>
+        and username = #{username}
+        and user_pwd = #{userPwd}
+    </select>
+
 </mapper>
 

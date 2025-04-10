@@ -2,7 +2,6 @@ package com.piggy.lwm.service;
 
 import com.piggy.lwm.domain.UserEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * (User)表服务接口
@@ -52,4 +51,5 @@ public interface UserService {
      */
     boolean deleteById(Integer id);
 
+    UserEntity login(UserEntity user);
 }
