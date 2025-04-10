@@ -9,29 +9,32 @@
         <result property="supplier" column="supplier" jdbcType="VARCHAR"/>
         <result property="shelfLife" column="shelf_life" jdbcType="INTEGER"/>
     </resultMap>
-    
+
     <sql id="baseSql">
-        select
-goods_id, goods_name, category, supplier, shelf_life
+        select goods_id,
+               goods_name,
+               category,
+               supplier,
+               shelf_life
         from goods
         where del_mark = 0
     </sql>
     <sql id="condition">
-            <if test="goods.goodsId != null and goods.goodsId != ''">
-                and goods_id = #{goods.goodsId}
-            </if>
-            <if test="goods.goodsName != null and goods.goodsName != ''">
-                and goods_name = #{goods.goodsName}
-            </if>
-            <if test="goods.category != null and goods.category != ''">
-                and category = #{goods.category}
-            </if>
-            <if test="goods.supplier != null and goods.supplier != ''">
-                and supplier = #{goods.supplier}
-            </if>
-            <if test="goods.shelfLife != null">
-                and shelf_life = #{goods.shelfLife}
-            </if>
+        <if test="goods.goodsId != null and goods.goodsId != ''">
+            and goods_id = #{goods.goodsId}
+        </if>
+        <if test="goods.goodsName != null and goods.goodsName != ''">
+            and goods_name = #{goods.goodsName}
+        </if>
+        <if test="goods.category != null and goods.category != ''">
+            and category = #{goods.category}
+        </if>
+        <if test="goods.supplier != null and goods.supplier != ''">
+            and supplier = #{goods.supplier}
+        </if>
+        <if test="goods.shelfLife != null">
+            and shelf_life = #{goods.shelfLife}
+        </if>
     </sql>
 
     <!--查询单个-->
@@ -67,7 +70,7 @@ goods_id, goods_name, category, supplier, shelf_life
         insert into goods(goods_name, category, supplier, shelf_life)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
+            (#{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
         </foreach>
     </insert>
 
@@ -78,7 +81,8 @@ goods_id, goods_name, category, supplier, shelf_life
             (#{entity.goodsName}, #{entity.category}, #{entity.supplier}, #{entity.shelfLife})
         </foreach>
         on duplicate key update
-goods_name = values(goods_name)category = values(category)supplier = values(supplier)shelf_life = values(shelf_life)
+        goods_name = values(goods_name)category = values(category)supplier = values(supplier)shelf_life =
+        values(shelf_life)
     </insert>
 
     <!--通过主键修改数据-->
@@ -103,7 +107,9 @@ goods_name = values(goods_name)category = values(category)supplier = values(supp
 
     <!--通过主键删除，物理删除-->
     <update id="deleteById">
-        update goods set del_mark=0 where goods_id = #{goodsId}
+        update goods
+        set del_mark=0
+        where goods_id = #{goodsId}
     </update>
 
 </mapper>

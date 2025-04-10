@@ -69,7 +69,8 @@
             "goodsId": $("#goodsId").val(),
             "warehouseId": $("#warehouseId").val(),
             "quantity": $("#quantity").val(),
-            "operatorId": $("#operatorId").val()
+            "operatorId": $("#operatorId").val(),
+            "outboundTime": $("#outboundTime").val()
         }
         // 发送请求
         $.getJSON("lwm/outbound/add", params, function (data){

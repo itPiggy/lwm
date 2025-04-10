@@ -103,7 +103,7 @@
 <script src="js/pagination-comm.js"/>
 <script type="text/javascript">
     $(function () {
-      loadPageInfo("http://localhost:8081/lwm/goods/queryByPage")
+        loadPageInfo("http://localhost:8081/lwm/goods/queryByPage")
     });
 
     /*显示行数据*/
@@ -116,17 +116,18 @@
             //拼接表格行
             let row = `
   			<tr>
-                  <td>${item.goodsName}</td>
-                  <td>${item.category}</td>
-                  <td>${item.supplier}</td>
-                  <td>${item.shelfLife}</td>
-                  <td>
-                    <div class="btn-group">
-                      <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                      <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
-                    </div>
-                  </td>
-                </tr>
+  			   <td>${item.goodsId}</td>
+               <td>${item.goodsName}</td>
+               <td>${item.category}</td>
+               <td>${item.supplier}</td>
+               <td>${item.shelfLife}</td>
+               <td>
+                 <div class="btn-group">
+                   <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                   <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                 </div>
+               </td>
+            </tr>
   		`;
             //添加到表格中
             $("tbody").append(row);
