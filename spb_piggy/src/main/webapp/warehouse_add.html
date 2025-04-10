@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>新增仓库 - 苍龙(Azure Dragon)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="AzureDragon,苍龙,后台模板,后台管理系统,苍龙HTML模板">
+    <meta name="description" content="AzureDragon是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" rel="stylesheet">
+    <!--标签插件-->
+    <link rel="stylesheet" href="js/jquery-tags-input/jquery.tagsinput.min.css">
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid p-t-15">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <form action="#!" method="post" class="row">
+                            <div class="form-group col-md-12">
+                                <label for="whId">仓库ID</label>
+                                <input type="text" class="form-control" id="whId" name="whId" value="" placeholder="请输入仓库ID（规则：WH-城市代码-序号）" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="whUserId">关联用户ID</label>
+                                <input type="number" class="form-control" id="whUserId" name="whUserId" value="" placeholder="请输入关联用户ID" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="whName">仓库名称</label>
+                                <input type="text" class="form-control" id="whName" name="whName" value="" placeholder="请输入仓库名称" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="whCapacity">最大库容量（立方米）</label>
+                                <input type="number" class="form-control" id="whCapacity" name="whCapacity" value="" placeholder="请输入最大库容量" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="whLocation">详细地址</label>
+                                <input type="text" class="form-control" id="whLocation" name="whLocation" value="" placeholder="请输入详细地址" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button type="button" onclick="addWarehouseItem()" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                                <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!--标签插件-->
+    <script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript">
+        // 定义添加仓库项目的方法
+        function addWarehouseItem(){
+            // 封装提交数据
+            var params = {
+                "whId": $("#whId").val(),
+                "whUserId": $("#whUserId").val(),
+                "whName": $("#whName").val(),
+                "whCapacity": $("#whCapacity").val(),
+                "whLocation": $("#whLocation").val()
+            }
+            // 发送请求
+            $.getJSON("lwm/warehouse/add", params, function (data){
+                // 判断请求是否成功
+                if (data.code == 200){
+                    // 提示信息
+                    alert("添加成功")
+                    // 跳转到列表页面
+                    location.href = "lwm_warehouse_list.html";
+                } else {
+                    // 提示信息
+                    alert(data.msg)
+                }
+            });
+        }
+    </script>
+</body>
+</html>
