@@ -145,6 +145,10 @@
                 return;
             }
 
+            // 记录登录用户信息到sessionStorage
+            sessionStorage.setItem("logUser", JSON.stringify(data.content));
+
+            // 登录成功，跳转页面
             location.href = 'index.html';
 
         });
