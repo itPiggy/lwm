@@ -46,6 +46,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>货物编号</th>
                                 <th>货物名称</th>
                                 <th>类型</th>
@@ -55,6 +56,7 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td>1</td>
                                 <td>G-DAILY-20240520-002</td>
                                 <td>清风抽纸（200抽）</td>
                                 <td>日用品</td>
@@ -116,6 +118,7 @@
             //拼接表格行
             let row = `
   			<tr>
+  			   <td>${item.id}</td>
   			   <td>${item.goodsId}</td>
                <td>${item.goodsName}</td>
                <td>${item.category}</td>

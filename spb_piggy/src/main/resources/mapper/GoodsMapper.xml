@@ -40,7 +40,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="GoodsMap">
         <include refid="baseSql"></include>
-        and goods_id = #{goodsId}
+        and id = #{id}
     </select>
 
     <!--查询指定行数据-->
