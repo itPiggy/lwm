@@ -139,6 +139,11 @@ public class UserController {
         return returnVO;
     }
 
+    /**
+     * 登录及校验
+     * @param user 用户名
+     * @return 返回错误或成功信息
+     */
     @RequestMapping("login")
     public ReturnVO login(UserEntity user) {
         //定义失败的返回对象
@@ -147,6 +152,7 @@ public class UserController {
         UserEntity foundUser = this.userService.login(user);
         //判断用户是否存在
         if(foundUser == null){
+            returnVO.setMsg("用户名或密码错误");
             return returnVO; // 用户不存在，返回失败信息
         }
         //查询成功
