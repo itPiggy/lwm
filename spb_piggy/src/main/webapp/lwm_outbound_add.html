@@ -45,6 +45,10 @@
                             <input type="number" class="form-control" id="operatorId" name="operatorId" value="" placeholder="请输入操作员 ID" />
                         </div>
                         <div class="form-group col-md-12">
+                            <label for="outboundTime">出库日期</label>
+                            <input type="number" class="form-control" id="outboundTime" name="outboundTime" value="" placeholder="请输入出库日期" />
+                        </div>
+                        <div class="form-group col-md-12">
                             <button type="button" onclick="addOutboundItem()" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
                             <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                         </div>
@@ -73,13 +77,13 @@
             "outboundTime": $("#outboundTime").val()
         }
         // 发送请求
-        $.getJSON("lwm/outbound/add", params, function (data){
+        $.getJSON("outboundRecord/add", params, function (data){
             // 判断请求是否成功
             if (data.code == 1){
                 // 提示信息
                 alert("添加成功")
                 // 跳转到列表页面
-                location.href = "outbound_management.html";
+                location.href = "lwm_outbound_list.html";
             } else {
                 // 提示信息
                 alert(data.msg)

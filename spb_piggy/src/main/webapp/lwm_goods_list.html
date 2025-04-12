@@ -11,6 +11,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/materialdesignicons.min.css" rel="stylesheet">
     <link href="css/style.min.css" rel="stylesheet">
+    <!--对话框-->
+    <link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
 </head>
 
 <body>
@@ -37,7 +39,7 @@
                         </div>
                     </form>
                     <div class="toolbar-btn-action">
-                        <a class="btn btn-primary m-r-5" href="lwm_pages_add.html"><i class="mdi mdi-plus"></i> 新增</a>
+                        <a class="btn btn-primary m-r-5" href="lwm_goods_add.html"><i class="mdi mdi-plus"></i> 新增</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -45,23 +47,24 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
-                            <tr>
+                              <tr>
                                 <th>序号</th>
                                 <th>货物编号</th>
                                 <th>货物名称</th>
                                 <th>类型</th>
                                 <th>供货商</th>
                                 <th>保质期</th>
-                            </tr>
+                                <th>操作</th>
+                              </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                              <tr>
                                 <td>1</td>
-                                <td>G-DAILY-20240520-002</td>
-                                <td>清风抽纸（200抽）</td>
-                                <td>日用品</td>
-                                <td>清风集团</td>
-                                <td>1092</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
                                 <td>
                                     <div class="btn-group">
                                         <a class="btn btn-xs btn-default" href="#!" title="编辑"
@@ -70,7 +73,7 @@
                                            data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                                     </div>
                                 </td>
-                            </tr>
+                              </tr>
                             </tbody>
                         </table>
                     </div>
@@ -101,8 +104,10 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<!--对话框-->
+<script src="js/jconfirm/jquery-confirm.min.js"></script>
 <!--分页查询组件-->
-<script src="js/pagination-comm.js"/>
+<script src="js/pagination-comm.js"></script>
 <script type="text/javascript">
     $(function () {
         loadPageInfo("http://localhost:8081/lwm/goods/queryByPage")
@@ -126,8 +131,8 @@
                <td>${item.shelfLife}</td>
                <td>
                  <div class="btn-group">
-                   <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                   <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                   <a class="btn btn-xs btn-default" href="javascript:jumpToEditPage('${item.goodsId}', '${item.goodsName}', '${item.category}', '${item.supplier}', ${item.shelfLife})" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                   <a class="btn btn-xs btn-default" href="javascript:delById('goods/deleteById/', '${item.id}', '${item.goodsName}')" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                  </div>
                </td>
             </tr>
@@ -135,6 +140,22 @@
             //添加到表格中
             $("tbody").append(row);
         }
+    }
+
+    // 跳转到修改页面
+    function jumpToEditPage(goodsId, goodsName, category, supplier, shelfLife) {
+        // 封装信息到对象
+        let goodsInfo = {
+            "goodsId": goodsId,
+            "goodsName": goodsName,
+            "category": category,
+            "supplier": supplier,
+            "shelfLife": shelfLife
+        };
+        // 通过sessionStorage存储数据
+        sessionStorage.setItem("editGoodsItem", JSON.stringify(goodsInfo));
+        // 跳转到修改页面
+        window.location.href = "lwm_goods_edit.html";
     }
 </script>
 </body>

@@ -11,6 +11,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/materialdesignicons.min.css" rel="stylesheet">
     <link href="css/style.min.css" rel="stylesheet">
+    <!--对话框-->
+    <link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
 </head>
 
 <body>
@@ -46,26 +48,29 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>入库单号</th>
+                                <th>序号</th>
                                 <th>货物 ID</th>
                                 <th>仓库 ID</th>
+                                <th>入库单号</th>
                                 <th>入库数量</th>
                                 <th>生产日期</th>
                                 <th>存储位置</th>
-                                <th>操作员 ID</th>
                                 <th>入库时间</th>
+                                <th>操作员 ID</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>IN-20250410-001</td>
-                                <td>G-001</td>
-                                <td>WH-SH-001</td>
-                                <td>100</td>
-                                <td>2025-04-01</td>
-                                <td>A-01-02</td>
-                                <td>1</td>
-                                <td>2025-04-10 10:00:00</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     <div class="btn-group">
                                         <a class="btn btn-xs btn-default" href="#!" title="编辑"
@@ -105,11 +110,13 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<!--对话框-->
+<script src="js/jconfirm/jquery-confirm.min.js"></script>
 <!--分页查询组件-->
-<script src="js/pagination-comm.js"/>
+<script src="js/pagination-comm.js"></script>
 <script type="text/javascript">
     $(function () {
-        loadPageInfo("http://localhost:8081/lwm/inbound/queryByPage")
+        loadPageInfo("http://localhost:8081/lwm/inboundRecord/queryByPage")
     });
 
     /*显示行数据*/
@@ -122,18 +129,19 @@
             //拼接表格行
             let row = `
             <tr>
-                <td>${item.recordId}</td>
+                <td>${item.id}</td>
                 <td>${item.goodsId}</td>
                 <td>${item.warehouseId}</td>
+                <td>${item.recordId}</td>
                 <td>${item.quantity}</td>
                 <td>${item.productionDate}</td>
                 <td>${item.storageLocation}</td>
-                <td>${item.operatorId}</td>
                 <td>${item.inboundTime}</td>
+                <td>${item.operatorId}</td>
                 <td>
                     <div class="btn-group">
-                        <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                        <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                <a class="btn btn-xs btn-default" href="javascript:jumpToEditPage(${item.id}, '${item.goodsId}', '${item.warehouseId}', '${item.recordId}', ${item.quantity}, '${item.productionDate}', '${item.storageLocation}', '${item.inboundTime}', ${item.operatorId})" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                        <a class="btn btn-xs btn-default" href="javascript:delById('inboundRecord/deleteById/', '${item.id}', '${item.goodsId}')" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                     </div>
                 </td>
             </tr>
@@ -141,6 +149,26 @@
             //添加到表格中
             $("tbody").append(row);
         }
+    }
+
+    // 跳转到修改页面
+    function jumpToEditPage(id, goodsId, warehouseId, recordId, quantity, productionDate, storageLocation, inboundTime, operatorId) {
+        // 封装信息到对象
+        let inboundInfo = {
+            "id": id,
+            "goodsId": goodsId,
+            "warehouseId": warehouseId,
+            "recordId": recordId,
+            "quantity": quantity,
+            "productionDate": productionDate,
+            "storageLocation": storageLocation,
+            "inboundTime": inboundTime,
+            "operatorId": operatorId
+        };
+        // 通过sessionStorage存储数据
+        sessionStorage.setItem("editInboundInfo", JSON.stringify(inboundInfo));
+        // 跳转到修改页面
+        window.location.href = "lwm_inbound_edit.html";
     }
 </script>
 </body>

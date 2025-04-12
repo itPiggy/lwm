@@ -11,6 +11,8 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/materialdesignicons.min.css" rel="stylesheet">
   <link href="css/style.min.css" rel="stylesheet">
+  <!--对话框-->
+  <link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
 </head>
 
 <body>
@@ -46,20 +48,23 @@
             <table class="table table-bordered">
               <thead>
               <tr>
-                <th>仓库 ID</th>
-                <th>关联用户 ID</th>
+                <th>序号</th>
+                <th>仓库ID</th>
+                <th>关联用户ID</th>
                 <th>仓库名称</th>
-                <th>最大库容量（立方米）</th>
+                <th>最大库容量(立方米)</th>
                 <th>详细地址</th>
+                <th>操作</th>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>WH-SH-001</td>
-                <td>1</td>
-                <td>上海仓库</td>
-                <td>1000</td>
-                <td>上海市浦东新区 XX 路 XX 号</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                   <div class="btn-group">
                     <a class="btn btn-xs btn-default" href="#!" title="编辑"
@@ -99,8 +104,10 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<!--对话框-->
+<script src="js/jconfirm/jquery-confirm.min.js"></script>
 <!--分页查询组件-->
-<script src="js/pagination-comm.js"/>
+<script src="js/pagination-comm.js"></script>
 <script type="text/javascript">
   $(function () {
     loadPageInfo("http://localhost:8081/lwm/warehouse/queryByPage")
@@ -116,6 +123,7 @@
       //拼接表格行
       let row = `
             <tr>
+                <td>${item.id}</td>
                 <td>${item.whId}</td>
                 <td>${item.whUserId}</td>
                 <td>${item.whName}</td>
@@ -123,8 +131,8 @@
                 <td>${item.whLocation}</td>
                 <td>
                     <div class="btn-group">
-                        <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                        <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                        <a class="btn btn-xs btn-default" href="javascript:jumpToEditPage(${item.id}, '${item.whId}', '${item.whUserId}', '${item.whName}', ${item.whCapacity}, '${item.whLocation}')"i" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                        <a class="btn btn-xs btn-default" href="javascript:delById('warehouse/deleteById/', '${item.id}', '${item.whName}')" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                     </div>
                 </td>
             </tr>
@@ -132,6 +140,23 @@
       //添加到表格中
       $("tbody").append(row);
     }
+  }
+
+  // 跳转到修改页面
+  function jumpToEditPage(id, whId, whUserId, whName, whCapacity, whLocation) {
+    // 封装信息到对象
+    let warehouseInfo = {
+      "id": id,
+      "whId": whId,
+      "whUserId": whUserId,
+      "whName": whName,
+      "whCapacity": whCapacity,
+      "whLocation": whLocation,
+    };
+    // 通过sessionStorage存储数据
+    sessionStorage.setItem("editWarehouseInfo", JSON.stringify(warehouseInfo));
+    // 跳转到修改页面
+    window.location.href = "lwm_warehouse_edit.html";
   }
 </script>
 </body>

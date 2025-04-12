@@ -27,7 +27,7 @@
             <div class="lyear-layout-sidebar-scroll">
 
                 <nav class="sidebar-main">
-                    <ul class="nav nav-drawer">
+                    <ul class="nav nav-drawer" id="menuContainer">
                         <li class="nav-item active"><a class="multitabs" href="lyear_main.html"><i
                                 class="mdi mdi-home"></i> <span>后台首页</span></a></li>
                         <li class="nav-item nav-item-has-subnav">
@@ -40,7 +40,7 @@
                         <li class="nav-item nav-item-has-subnav">
                             <a href="javascript:void(0)"><i class="mdi mdi-van-utility"></i> <span>入库管理</span></a>
                             <ul class="nav nav-subnav">
-                                <li><a class="multitabs" href="">查询入库信息</a></li>
+                                <li><a class="multitabs" href="lwm_inbound_list.html">查询入库信息</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
@@ -64,7 +64,7 @@
                         <li class="nav-item nav-item-has-subnav">
                             <a href="javascript:void(0)"><i class="mdi mdi-content-paste"></i> <span>日志管理</span></a>
                             <ul class="nav nav-subnav">
-                                <li><a class="multitabs" href="">查询日志</a></li>
+                                <li><a class="multitabs" href="lwm_operation_log.html">查询日志</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -97,7 +97,7 @@
                             <a href="javascript:void(0)" data-toggle="dropdown">
                                 <img class="img-avatar img-avatar-48 m-r-10" src="images/users/header_pic.jpg"
                                      alt="admin"/>
-                                <span>admin <span class="caret"></span></span>
+                                <span><span id="username"></span> <span class="caret"></span></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a class="multitabs" data-url="lyear_pages_profile.html"
@@ -252,7 +252,7 @@
 
     // 获取登录用户
     function showLogUser() {
-        var logUser = JSON.parse(sessionStorage.getItem("logUser"));
+        let logUser = JSON.parse(sessionStorage.getItem("logUser"));
         // 在这里可以添加显示登录用户信息的逻辑
 
         // 重定向到登录页面如果未找到登录用户
@@ -260,10 +260,118 @@
             location.href = "login.html";
         }
 
-        //
-        $('#user-name').text(logUser.username);
+        // 将用户名显示在导航栏中
+        $('#username').html(logUser.username);
 
+        setMenuPermissions(logUser);
     }
+
+    // 设置菜单权限
+    function setMenuPermissions(logUser) {
+        let menuEle = null;
+        // 系统管理员
+        if (logUser.permissionLevel == 0){
+            menuEle = sysadminMenu;
+        }else if (logUser.permissionLevel == 1){
+            menuEle = warehouseMgrMenu;
+        }else{
+            menuEle = staffMenu;
+        }
+
+        if (menuEle){
+            $('#menuContainer').empty();
+            $('#menuContainer').append(menuEle);
+        }
+    }
+
+    var sysadminMenu = `
+        <li class="nav-item active"><a class="multitabs" href="lyear_main.html"><i
+                                class="mdi mdi-home"></i> <span>后台首页</span></a></li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-package-variant-closed"></i>
+                                <span>货物管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_goods_list.html">查询货物</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-van-utility"></i> <span>入库管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_inbound_list.html">查询入库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-truck-fast"></i> <span>出库信息</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_outbound_list.html">查询出库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-database"></i> <span>仓库管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_warehouse_list.html">查询仓库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-account"></i> <span>用户管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_users_list.html">查询用户信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-content-paste"></i> <span>日志管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_operation_log.html">查询日志</a></li>
+                            </ul>
+                        </li>
+    `;
+
+    var warehouseMgrMenu = `
+        <li class="nav-item active"><a class="multitabs" href="lyear_main.html"><i
+                                class="mdi mdi-home"></i> <span>后台首页</span></a></li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-package-variant-closed"></i>
+                                <span>货物管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_goods_list.html">查询货物</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-van-utility"></i> <span>入库管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_inbound_list.html">查询入库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-truck-fast"></i> <span>出库信息</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_outbound_list.html">查询出库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-content-paste"></i> <span>日志管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_operation_log.html">查询日志</a></li>
+                            </ul>
+                        </li>
+    `;
+
+    var staffMenu = `
+        <li class="nav-item active"><a class="multitabs" href="lyear_main.html"><i
+                                class="mdi mdi-home"></i> <span>后台首页</span></a></li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-van-utility"></i> <span>入库管理</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_inbound_list.html">查询入库信息</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-truck-fast"></i> <span>出库信息</span></a>
+                            <ul class="nav nav-subnav">
+                                <li><a class="multitabs" href="lwm_outbound_list.html">查询出库信息</a></li>
+                            </ul>
+                        </li>
+    `;
 </script>
 </body>
 </html>

@@ -65,6 +65,7 @@
         function addWarehouseItem(){
             // 封装提交数据
             var params = {
+                "id": $("id").val(),
                 "whId": $("#whId").val(),
                 "whUserId": $("#whUserId").val(),
                 "whName": $("#whName").val(),
@@ -72,7 +73,7 @@
                 "whLocation": $("#whLocation").val()
             }
             // 发送请求
-            $.getJSON("lwm/warehouse/add", params, function (data){
+            $.getJSON("warehouse/add", params, function (data){
                 // 判断请求是否成功
                 if (data.code == 1){
                     // 提示信息

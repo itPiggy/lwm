@@ -3,6 +3,7 @@
 <mapper namespace="com.piggy.lwm.mapper.GoodsMapper">
 
     <resultMap type="com.piggy.lwm.domain.GoodsEntity" id="GoodsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="goodsId" column="goods_id" jdbcType="VARCHAR"/>
         <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
         <result property="category" column="category" jdbcType="VARCHAR"/>
@@ -11,7 +12,8 @@
     </resultMap>
 
     <sql id="baseSql">
-        select goods_id,
+        select id,
+               goods_id,
                goods_name,
                category,
                supplier,
@@ -108,8 +110,8 @@
     <!--通过主键删除，物理删除-->
     <update id="deleteById">
         update goods
-        set del_mark=0
-        where goods_id = #{goodsId}
+        set del_mark = 1
+        where id = #{id}
     </update>
 
 </mapper>

@@ -49,6 +49,10 @@
                             <input type="text" class="form-control" id="storageLocation" name="storageLocation" value="" placeholder="请输入存储位置（如A-01-02）" />
                         </div>
                         <div class="form-group col-md-12">
+                            <label for="inboundTime">入库时间</label>
+                            <input type="text" class="form-control" id="inboundTime" name="inboundTime" value="" placeholder="请输入入库日期" />
+                        </div>
+                        <div class="form-group col-md-12">
                             <label for="operatorId">操作员 ID</label>
                             <input type="number" class="form-control" id="operatorId" name="operatorId" value="" placeholder="请输入操作员 ID" />
                         </div>
@@ -73,22 +77,22 @@
     function addInboundItem(){
         // 封装提交数据
         var params = {
-            "recordId": $("#recordId").val(),
             "goodsId": $("#goodsId").val(),
             "warehouseId": $("#warehouseId").val(),
+            "recordId": $("#recordId").val(),
             "quantity": $("#quantity").val(),
             "productionDate": $("#productionDate").val(),
             "storageLocation": $("#storageLocation").val(),
             "operatorId": $("#operatorId").val()
         }
         // 发送请求
-        $.getJSON("lwm/inbound/add", params, function (data){
+        $.getJSON("inboundRecord/add", params, function (data){
             // 判断请求是否成功
             if (data.code == 1){
                 // 提示信息
                 alert("添加成功")
                 // 跳转到列表页面
-                location.href = "inbound_management.html";
+                location.href = "lwm_inbound_list.html";
             } else {
                 // 提示信息
                 alert(data.msg)
